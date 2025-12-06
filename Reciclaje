@@ -1,0 +1,52 @@
+import discord
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+
+manualidades_lista = [
+    "Haz un macetero con una botella plástica cortada.",
+    "Convierte un frasco de vidrio en lámpara decorativa.",
+    "Usa tapas de plástico para crear mosaicos artísticos."
+]
+
+@bot.command()
+async def manualidad(ctx, numero: int):
+    if 1 <= numero <= len(manualidades_lista):
+        await ctx.send(manualidades_lista[numero - 1])
+    else:
+        await ctx.send(" No tengo esa opción, prueba con un número entre 1 y 3.")
+
+# Lista de objetos reciclables
+reciclables_lista = ["botella", "papel", "cartón", "lata"]
+
+@bot.command()
+async def clasificar(ctx, objeto: str):
+    if objeto.lower() in reciclables_lista:
+        await ctx.send(f" El objeto '{objeto}' se puede reciclar.")
+    else:
+        await ctx.send(f" El objeto '{objeto}' no es reciclable. Debe ir a la basura.")
+
+# Lista de tiempos de descomposición
+tiempos_lista = {
+    "botella": "450 años",
+    "lata": "200 años",
+    "papel": "2 a 5 meses",
+    "vidrio": "4000 años"
+}
+
+@bot.command()
+async def descomposicion(ctx, objeto: str):
+    if objeto.lower() in tiempos_lista:
+        await ctx.send(f"El objeto '{objeto}' tarda aproximadamente {tiempos_lista[objeto.lower()]} en descomponerse.")
+    else:
+        await ctx.send("Lo siento, no tengo información sobre ese objeto.")
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send("¡El bot está vivo!")
+
+
+bot.run("TOKEN")
